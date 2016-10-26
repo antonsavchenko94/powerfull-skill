@@ -22,7 +22,7 @@ insecure@1.0.7                # Allow all DB writes from clients (for prototypin
 accounts-ui
 accounts-password
 less
-bootstrap
-twbs:bootstrap
 kadira:flow-router
 react-meteor-data
+twbs:bootstrap
+check

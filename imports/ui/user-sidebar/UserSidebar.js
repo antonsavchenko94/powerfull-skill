@@ -7,12 +7,12 @@ class UserSidebar extends Component {
 
 
     render() {
-        console.log(this.props);
+
         return (
             <Row>
                 <div className="profile-sidebar">
                     <div className="profile-userpic">
-                        <img src="images/man.png" />
+                        <img src="/images/man.png" />
                     </div>
                     <div className="profile-usertitle">
                         <div className="profile-usertitle-nam">
@@ -23,20 +23,20 @@ class UserSidebar extends Component {
                     </div>
                     <div className="profile-usermenu">
                         <ul className="nav">
-                            <li className="active">
-                                <a href="#">
-                                    <i className="glyphicon glyphicon-home"></i>
-                                    Overview </a>
+                            <li>
+                                <a href="/all-dictionaries">
+                                    <i className="glyphicon glyphicon-th"></i>
+                                    All dictionaries</a>
+                            </li>
+                            <li>
+                                <a href="/dictionaries">
+                                    <i className="glyphicon glyphicon-book"></i>
+                                    Our dictionaries </a>
                             </li>
                             <li>
                                 <a href="#">
                                     <i className="glyphicon glyphicon-user"></i>
                                     Account Settings </a>
-                            </li>
-                            <li>
-                                <a href="#" target="_blank">
-                                    <i className="glyphicon glyphicon-ok"></i>
-                                    Tasks </a>
                             </li>
                             <li>
                                 <a href="/logout">

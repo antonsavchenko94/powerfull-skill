@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import {Grid, Col, Row, ButtonToolbar, Button} from 'react-bootstrap';
-import SignUp from '../sing-up/SignInUp'
-import SignIn  from '../registration/RegistrationForm'
+import SignUp from '../authentication/sign-in/SignIn'
+import SignIn  from '../authentication/sign-up/SignUp'
 
 
 class Home extends Component {
@@ -13,9 +13,9 @@ class Home extends Component {
 
     renderLoginForm() {
         if (this.props.singIn)
-            return (<SignIn/>);
-        else
             return (<SignUp/>);
+        else
+            return (<SignIn/>);
     }
     render() {
         return (
@@ -31,8 +31,8 @@ class Home extends Component {
                     <Col lg={6} md={6} xs={6}>
                         <Row>
                             <Col lg={6} lgOffset={2}>
-                                <h1><a href="/sing-in">Sing In</a>/
-                                    <a href="/">Sing Up</a></h1>
+                                <h1><a href="/">Sing In</a>/
+                                    <a href="/sign-up">Sing Up</a></h1>
                             </Col>
                         </Row>
                         {this.renderLoginForm()}

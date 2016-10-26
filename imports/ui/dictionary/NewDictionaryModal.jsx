@@ -1,13 +1,15 @@
 import React, {Component, PropTypes} from "react";
-import {Modal, Button} from "react-bootstrap";
+import {Modal, Button, Form, FormGroup, FormControl, Checkbox} from "react-bootstrap";
 import {createContainer} from "meteor/react-meteor-data";
+import ReactDOM from 'react-dom';
 
 
 class NewDictionaryModal extends Component {
     constructor() {
         super();
         this.state = {
-            showModal: false
+            showModal: false,
+            isPublic: false
         }
     }
 
@@ -19,26 +21,53 @@ class NewDictionaryModal extends Component {
         this.setState({showModal: true});
     }
 
+    createCard() {
+        let title = ReactDOM.findDOMNode(this.refs.title).value.trim();
+        let isPublic = this.state.isPublic;
+        if(title){
+            Meteor.call('dictionary.create', title, isPublic);
+            this.setState({showModal: false});
+        }
+    }
+
+    choosePublic() {
+        this.setState({
+            isPublic: !this.state.isPublic
+        })
+    }
+
     render() {
         return (
             <div>
                 <Button
                     bsStyle="primary"
-                    bsSize="large"
+                    bsSize="small"
                     onClick={this.open.bind(this)}>
 
-                    <img src="images/plus.png"/>
+                    <img src="/images/plus.png"/>
                 </Button>
 
                 <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Modal heading</Modal.Title>
+                        <Modal.Title>Create new card</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        Lalal
+                        <Form>
+                            <FormGroup controlId="formInlineName">
+                                {' '}
+                                <FormControl type="text" ref="title" placeholder="Title" />
+                            </FormGroup>
+                            <FormGroup controlId="formInlinePrivate">
+                                {' '}
+                                <Checkbox onClick={this.choosePublic.bind(this)}>
+                                    Is public
+                                </Checkbox>
+                            </FormGroup>
+                        </Form>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.close.bind(this)}>Close</Button>
+                        <Button onClick={this.createCard.bind(this)}>Create</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
