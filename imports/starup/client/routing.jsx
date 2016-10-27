@@ -1,12 +1,14 @@
 import {FlowRouter} from "meteor/kadira:flow-router";
 import React from "react";
 import {mount} from "react-mounter";
+
 import AppContainer from "../../ui/App";
 import Home from "../../ui/home/Home";
 import UserSidebarContainer from "../../ui/user-sidebar/UserSidebar";
 import CardContainer from "../../ui/dictionary/Card";
 import WordsViewContainer from "../../ui/dictionary/words/WordsView";
 import PublicDictionaries from "../../ui/dictionary/PublicDictionaries";
+import UserCardsContainer from "../../ui/users/UserCards";
 
 let loggedOut = FlowRouter.group({
     name: "loggedOut",
@@ -84,4 +86,24 @@ loggedIn.route('/view/:dictionaryId', {
             mainView: (<WordsViewContainer id={params.dictionaryId}/>),
         });
     }
-})
+});
+
+loggedIn.route('/user/:id/view/:dictionaryId', {
+    name: "user-view-dictionaries",
+    action: (params, queryParams) => {
+        mount(AppContainer, {
+            userSidebar: (<UserSidebarContainer/>),
+            mainView: (<WordsViewContainer id={params.dictionaryId}/>),
+        });
+    }
+});
+
+loggedIn.route('/user/:id', {
+    name: "some-user-dictionaries",
+    action: (params, queryParams) => {
+        mount(AppContainer, {
+            userSidebar: (<UserSidebarContainer/>),
+            mainView: (<UserCardsContainer id={params.id}/>),
+        });
+    }
+});
