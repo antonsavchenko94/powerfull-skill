@@ -39,6 +39,11 @@ class UserSidebar extends Component {
                                     Account Settings </a>
                             </li>
                             <li>
+                                <a href="/quizzes">
+                                    <i className="glyphicon glyphicon-check"></i>
+                                    Quizzes </a>
+                            </li>
+                            <li>
                                 <a href="/logout">
                                     <i className="glyphicon glyphicon-flag"></i>
                                     Logout </a>

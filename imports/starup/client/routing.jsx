@@ -9,6 +9,8 @@ import CardContainer from "../../ui/dictionary/Card";
 import WordsViewContainer from "../../ui/dictionary/words/WordsView";
 import PublicDictionaries from "../../ui/dictionary/PublicDictionaries";
 import UserCardsContainer from "../../ui/users/UserCards";
+import QuizzesContainer from "../../ui/quizzes/Quizzes";
+import QuizContainer from "../../ui/quizzes/Quiz";
 
 let loggedOut = FlowRouter.group({
     name: "loggedOut",
@@ -104,6 +106,26 @@ loggedIn.route('/user/:id', {
         mount(AppContainer, {
             userSidebar: (<UserSidebarContainer/>),
             mainView: (<UserCardsContainer id={params.id}/>),
+        });
+    }
+});
+
+loggedIn.route('/quizzes', {
+    name: "quizzes",
+    action: (params, queryParams) => {
+        mount(AppContainer, {
+            userSidebar: (<UserSidebarContainer/>),
+            mainView: (<QuizzesContainer/>),
+        });
+    }
+});
+
+loggedIn.route('/quiz/:id', {
+    name: "quiz",
+    action: (params, queryParams) => {
+        mount(AppContainer, {
+            userSidebar: (<UserSidebarContainer/>),
+            mainView: (<QuizContainer id={params.id}/>),
         });
     }
 });
