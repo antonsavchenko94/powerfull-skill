@@ -12,8 +12,13 @@ class RegistrationForm extends Component {
             password: ReactDOM.findDOMNode(this.refs.password).value.trim(),
         };
         Meteor.call('user.create', newUser, ()=>{
-            console.log('hea');
-            FlowRouter.go("all-dictionaries");
+            Meteor.loginWithPassword(newUser.email, newUser.password, (error)=> {
+                if(error){
+                    console.log(error.reason)
+                }else {
+                    FlowRouter.go("/all-dictionaries")
+                }
+            })
         });
     }
 
