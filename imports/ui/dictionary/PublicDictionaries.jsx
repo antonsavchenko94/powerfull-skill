@@ -20,7 +20,7 @@ class PublicDictionaries extends Component {
                         <h4><a href={"view/" + dictionary._id}>{dictionary.title}</a></h4>
                         <span>
                             <i>by </i>
-                            <strong>{dictionary.owner.username}</strong>
+                            <strong><a href={"/user/" + dictionary.owner._id}>{dictionary.owner.username}</a></strong>
                         </span>
                     </div>
                 </Col>
@@ -38,8 +38,8 @@ class PublicDictionaries extends Component {
 }
 
 export default PublicDictionariesConteiner = createContainer(() => {
-    Meteor.subscribe('publicDictionaries')
-    Meteor.subscribe('users')
+    Meteor.subscribe('publicDictionaries');
+    Meteor.subscribe('users');
     return{
         dictionaries: Dictionaries.find().map((dictionary) => {
             let user = Meteor.users.findOne({_id:dictionary.owner});

@@ -26,7 +26,7 @@ class NewWordModal extends Component {
             translation: ReactDOM.findDOMNode(this.refs.translation).value.trim(),
             dictionaryId: FlowRouter.current().route.getParam('dictionaryId'),
             checked: false
-        }
+        };
 
         Meteor.call('save.word', newWord);
         this.close();
@@ -35,13 +35,9 @@ class NewWordModal extends Component {
     render() {
         return (
             <div>
-                <Button
-                    bsStyle="primary"
-                    bsSize="small"
-                    onClick={this.open.bind(this)}>
-
-                    <img src="/images/plus.png"/>
-                </Button>
+                <a onClick={this.open.bind(this)}>
+                    <img src="/images/compose.png"/>
+                </a>
 
                 <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
                     <Modal.Header closeButton>

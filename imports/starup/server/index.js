@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import '../../api/lists/methods';
+import '../../api/hooks';
 
 
 Meteor.startup(() => {
