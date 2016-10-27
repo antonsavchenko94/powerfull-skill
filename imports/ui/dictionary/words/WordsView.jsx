@@ -14,7 +14,7 @@ class WordsView extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         document.title = this.props.dictionary.title
     }
 

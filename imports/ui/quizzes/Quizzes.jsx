@@ -35,7 +35,7 @@ class Quizzes extends Component {
 }
 
 export default QuizContainer = createContainer(() => {
-    Meteor.subscribe('current-user-dictionaries');
+    Meteor.subscribe('user-dictionaries-with-words');
     return{
         dictionaries: Dictionaries.find().fetch(),
     }

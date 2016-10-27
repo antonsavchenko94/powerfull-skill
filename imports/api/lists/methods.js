@@ -27,6 +27,7 @@ Meteor.methods({
         let dictionary = {
             title,
             isPublic,
+            wordCount: 0,
             owner: Meteor.userId(),
         };
         Dictionaries.insert(dictionary, (err, doc) => {
@@ -58,16 +59,14 @@ Meteor.methods({
             dictionaryId: String,
             checked: Boolean
         });
-
-        if(word){
-            Words.insert(word, (err, doc) => {
-                if(err){
-                    console.log(err);
-                }else {
-                    console.log(doc);
-                }
-            })
-        }
+        Dictionaries.update
+        Words.insert(word, (err, doc) => {
+            if(err){
+                console.log(err);
+            }else {
+                console.log(doc);
+            }
+        })
     },
 
     'word.setChecked'(id, setChecked){

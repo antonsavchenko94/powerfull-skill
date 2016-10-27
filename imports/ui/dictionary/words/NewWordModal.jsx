@@ -51,7 +51,7 @@ class NewWordModal extends Component {
                                 <FormControl type="text" ref="word" placeholder="Word" />
                             </FormGroup>
                             <FormGroup controlId="formInlineTranscription">
-                                <ControlLabel>Word</ControlLabel>
+                                <ControlLabel>Transcription</ControlLabel>
                                 {' '}
                                 <FormControl type="text" ref="transcription" placeholder="Transcription" />
                             </FormGroup>
