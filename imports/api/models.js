@@ -22,12 +22,23 @@ if (Meteor.isServer) {
         }
     });
 
+    Meteor.publish('current-user-dictionaries', function() {
+        if(this.userId){
+            return Dictionaries.find({owner: this.userId});
+        }else {
+            throw new Meteor.Error('You must authorize!!!')
+        }
+    });
+
     Meteor.publish('publicDictionaries', function() {
         return Dictionaries.find({isPublic: true})
     });
 
-    Meteor.publish('words', (id) => {
-        return Words.find({dictionaryId: id })
+    Meteor.publish('words', function(id) {
+        check(id, String);
+        if(this.userId){
+            return Words.find({dictionaryId: id})
+        }
     });
 }
 
