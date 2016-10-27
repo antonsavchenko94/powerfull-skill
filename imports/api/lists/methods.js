@@ -21,12 +21,12 @@ Meteor.methods({
         }
     },
 
-    'dictionary.create'(title, public) {
-        check(title, String)
-        check(public, Boolean)
+    'dictionary.create'(title, isPublic) {
+        check(title, String);
+        check(isPublic, Boolean);
         let dictionary = {
             title,
-            public,
+            isPublic,
             owner: Meteor.userId(),
         };
         Dictionaries.insert(dictionary, (err, doc) => {
@@ -34,6 +34,20 @@ Meteor.methods({
                 console.log(err)
             }
         })
+    },
+
+    'delete.dictionary'(id){
+        check(id, String);
+        if(this.userId){
+            Dictionaries.remove(id, (err, doc) => {
+                if(err){
+                    console.log(err)
+                }else {
+                    console.log(`Document ${doc} was removed`)
+                }
+            })
+        }
+
     },
 
     'save.word'(word) {
@@ -57,8 +71,8 @@ Meteor.methods({
     },
 
     'word.setChecked'(id, setChecked){
-        check(id, String)
-        check(setChecked, Boolean)
+        check(id, String);
+        check(setChecked, Boolean);
         Words.update(id, { $set: { checked: setChecked } });
     }
 });

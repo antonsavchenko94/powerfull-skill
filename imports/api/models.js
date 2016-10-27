@@ -3,19 +3,27 @@ import { Mongo } from 'meteor/mongo';
 const Dictionaries = new Mongo.Collection('dictionaries');
 
 const Words = new Mongo.Collection('words');
-// const Users = new Mongo.Collection('users');
-
 
 if (Meteor.isServer) {
-    Meteor.publish('users', () => {
-        return Meteor.users.find();
-    });
-    Meteor.publish('dictionaries', () => {
-        return Dictionaries.find()
+    Meteor.publish('users', function() {
+        if(this.userId){
+            return Meteor.users.find();
+        }else {
+            throw new Meteor.Error('You must authorize!!!')
+        }
     });
 
-    Meteor.publish('publicDictionaries', () => {
-        return Dictionaries.find({public: true})
+    Meteor.publish('dictionaries', function() {
+        console.log(this.userId);
+        if(this.userId){
+            return Dictionaries.find();
+        }else {
+            throw new Meteor.Error('You must authorize!!!')
+        }
+    });
+
+    Meteor.publish('publicDictionaries', function() {
+        return Dictionaries.find({isPublic: true})
     });
 
     Meteor.publish('words', (id) => {
