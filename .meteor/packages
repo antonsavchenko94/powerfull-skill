@@ -26,3 +26,4 @@ kadira:flow-router
 react-meteor-data
 twbs:bootstrap
 check
+matb33:collection-hooks
