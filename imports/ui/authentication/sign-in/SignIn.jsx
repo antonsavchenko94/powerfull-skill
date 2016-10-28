@@ -1,36 +1,34 @@
 import React, {Component, PropTypes} from "react";
-import {FormControl, FormGroup, Form, Col, Row, Button} from "react-bootstrap";
-import ReactDOM from 'react-dom';
-
-// import "./singInUp.less";
-
+import {FormGroup, Form, Col, Button} from "react-bootstrap";
 
 class SingIn extends Component {
 
-    loginIn(){
-        let email = ReactDOM.findDOMNode(this.refs.email).value.trim();
-        let password = ReactDOM.findDOMNode(this.refs.password).value.trim();
+    loginIn() {
+        let email = this.refs.email.value.trim(),
+            password = this.refs.password.value.trim();
+
         Meteor.loginWithPassword(email, password, (error)=> {
-            if(error){
+            if (error) {
                 console.log(error.reason)
-            }else {
+            }
+            else {
                 FlowRouter.go("/all-dictionaries")
             }
-        })
+        });
     }
 
     render() {
         return (
             <div id="sing-up">
                 <Col lg={10}>
-                <Form horizontal>
+                    <Form horizontal>
                         <FormGroup controlId="formHorizontalEmail" bsSize="large">
-                            <FormControl type="email" ref="email" placeholder="Email"/>
+                            <input className="form-control" type="email" ref="email" placeholder="Email"/>
                         </FormGroup>
                         <FormGroup controlId="formHorizontalPassword" bsSize="large">
-                            <FormControl type="password" ref="password" placeholder="Password"/>
+                            <input className="form-control" type="password" ref="password" placeholder="Password"/>
                         </FormGroup>
-                </Form>
+                    </Form>
                 </Col>
                 <Col lg={1}>
                     <Button bsSize="large" bsStyle="warning" className="btn-sq" onClick={this.loginIn.bind(this)}>

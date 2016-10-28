@@ -1,1 +1,1 @@
-import '/imports/starup/client';
+import "../imports/starup/client";

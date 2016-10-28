@@ -1,7 +1,6 @@
 import {FlowRouter} from "meteor/kadira:flow-router";
 import React from "react";
 import {mount} from "react-mounter";
-
 import AppContainer from "../../ui/App";
 import Home from "../../ui/home/Home";
 import UserSidebarContainer from "../../ui/user-sidebar/UserSidebar";
@@ -11,6 +10,8 @@ import PublicDictionaries from "../../ui/dictionary/PublicDictionaries";
 import UserCardsContainer from "../../ui/users/UserCards";
 import QuizzesContainer from "../../ui/quizzes/Quizzes";
 import QuizContainer from "../../ui/quizzes/Quiz";
+import SignIn from "../../ui/authentication/sign-in/SignIn";
+import SignUp from "../../ui/authentication/sign-up/SignUp";
 
 let loggedOut = FlowRouter.group({
     name: "loggedOut",
@@ -25,7 +26,7 @@ loggedOut.route('/sign-up', {
     name: "sign",
     action: (params, queryParams) => {
         mount(AppContainer, {
-            mainView: (<Home singIn={false}/>),
+            mainView: <Home form={<SignIn/>}/>,
         });
     }
 });
@@ -34,7 +35,7 @@ loggedOut.route('/', {
     name: "Main",
     action: (params, queryParams) => {
         mount(AppContainer, {
-            mainView: (<Home singIn={true}/>),
+            mainView: <Home form={<SignUp/>}/>,
         });
     }
 });
@@ -51,8 +52,8 @@ loggedIn.route('/all-dictionaries', {
     name: "all-dictionaries",
     action: (params, queryParams) => {
         mount(AppContainer, {
-            userSidebar: (<UserSidebarContainer/>),
-            mainView: (<PublicDictionaries/>),
+            userSidebar: <UserSidebarContainer/>,
+            mainView: <PublicDictionaries/>,
         });
 
     }
@@ -63,7 +64,7 @@ loggedIn.route('/logout', {
     action: (params, queryParams) => {
         Meteor.logout(() => {
             mount(AppContainer, {
-                mainView: (<Home singIn={false}/>),
+                mainView: <Home form={<SignIn/>}/>,
             });
         })
 
@@ -74,8 +75,8 @@ loggedIn.route('/dictionaries', {
     name: "dictionaries",
     action: (params, queryParams) => {
         mount(AppContainer, {
-            userSidebar: (<UserSidebarContainer/>),
-            mainView: (<CardContainer/>),
+            userSidebar: <UserSidebarContainer/>,
+            mainView: <CardContainer/>,
         });
     }
 });
@@ -84,8 +85,8 @@ loggedIn.route('/view/:dictionaryId', {
     name: "dictionary-view",
     action: (params, queryParams) => {
         mount(AppContainer, {
-            userSidebar: (<UserSidebarContainer/>),
-            mainView: (<WordsViewContainer id={params.dictionaryId}/>),
+            userSidebar: <UserSidebarContainer/>,
+            mainView: <WordsViewContainer id={params.dictionaryId}/>,
         });
     }
 });
@@ -94,8 +95,8 @@ loggedIn.route('/user/:id/view/:dictionaryId', {
     name: "user-view-dictionaries",
     action: (params, queryParams) => {
         mount(AppContainer, {
-            userSidebar: (<UserSidebarContainer/>),
-            mainView: (<WordsViewContainer id={params.dictionaryId}/>),
+            userSidebar: <UserSidebarContainer/>,
+            mainView: <WordsViewContainer id={params.dictionaryId}/>,
         });
     }
 });
@@ -104,8 +105,8 @@ loggedIn.route('/user/:id', {
     name: "some-user-dictionaries",
     action: (params, queryParams) => {
         mount(AppContainer, {
-            userSidebar: (<UserSidebarContainer/>),
-            mainView: (<UserCardsContainer id={params.id}/>),
+            userSidebar: <UserSidebarContainer/>,
+            mainView: <UserCardsContainer id={params.id}/>,
         });
     }
 });
@@ -114,8 +115,8 @@ loggedIn.route('/quizzes', {
     name: "quizzes",
     action: (params, queryParams) => {
         mount(AppContainer, {
-            userSidebar: (<UserSidebarContainer/>),
-            mainView: (<QuizzesContainer/>),
+            userSidebar: <UserSidebarContainer/>,
+            mainView: <QuizzesContainer/>,
         });
     }
 });
@@ -124,8 +125,8 @@ loggedIn.route('/quiz/:id', {
     name: "quiz",
     action: (params, queryParams) => {
         mount(AppContainer, {
-            userSidebar: (<UserSidebarContainer/>),
-            mainView: (<QuizContainer id={params.id}/>),
+            userSidebar: <UserSidebarContainer/>,
+            mainView: <QuizContainer id={params.id}/>,
         });
     }
 });

@@ -1,10 +1,8 @@
-import { Meteor } from 'meteor/meteor'
-import React, {Component, PropTypes} from "react";
-import {FormControl, Col, Button, Panel, Form, FormGroup, ControlLabel} from "react-bootstrap";
+import {Meteor} from "meteor/meteor";
+import React, {Component} from "react";
+import {Col, Button, Panel, Form, FormGroup, ControlLabel} from "react-bootstrap";
 import {createContainer} from "meteor/react-meteor-data";
-import ReactDOM from 'react-dom';
-
-import {Words} from '../../api/models'
+import {Dictionaries} from "../../api/models";
 
 class Quiz extends Component {
     constructor(props) {
@@ -19,14 +17,14 @@ class Quiz extends Component {
 
     checkAnswer() {
         let index = this.state.questionIndex;
-        let answer = ReactDOM.findDOMNode(this.refs.answer).value.trim().toLowerCase();
+        let answer = this.refs.answer.value.trim().toLowerCase();
 
-        if(answer === this.props.words[index].word){
-            this.setState ({
+        if (answer === words[index].word) {
+            this.setState({
                 msg: "Correct answer",
                 correctAnswers: this.state.correctAnswers + 1,
             });
-        }else if(this.props.words) {
+        } else if (words) {
             this.setState({
                 msg: "Wrong answer",
                 wrongAnswers: this.state.wrongAnswers + 1,
@@ -35,23 +33,23 @@ class Quiz extends Component {
     }
 
     nextWord() {
-        this.setState ({
+        this.setState({
             questionIndex: this.state.questionIndex + 1,
             msg: ''
         });
     }
 
     renderQuizWords() {
-        let index = this.state.questionIndex;
-        console.log(index);
-        console.log(this.props.words.length);
-        if(index <= this.props.words.length - 1) {
+        let index = this.state.questionIndex,
+            words = this.props.dictionary.words;
+
+        if (index <= words.length - 1) {
             return (
                 <Form inline>
                     <FormGroup controlId="formInlineEmail">
-                        <ControlLabel>{this.props.words[index].translation}</ControlLabel>
+                        <ControlLabel>{words[index].translation}</ControlLabel>
                         {' - '}
-                        <FormControl type="text" ref="answer" placeholder="Write translation" />
+                        <input className="form-control" type="text" ref="answer" placeholder="Write translation"/>
                     </FormGroup>
                     <Button onClick={this.checkAnswer.bind(this)}>
                         Check
@@ -62,8 +60,8 @@ class Quiz extends Component {
                     <span>{this.state.msg}</span>
                 </Form>
             )
-        }else {
-            return(
+        } else {
+            return (
                 <Col lg={6}>
                     <h1>You have {this.state.correctAnswers} correct answers and {this.state.wrongAnswers} wrong</h1>
                 </Col>
@@ -73,18 +71,24 @@ class Quiz extends Component {
     }
 
     render() {
-        return(
-            <Panel header="Quiz">
-                {this.renderQuizWords()}
-            </Panel>
-        )
+        if (this.props.isLoading) {
+            return (
+                <Panel header="Quiz">
+                    {this.renderQuizWords()}
+                </Panel>
+            )
+        } else {
+            return (<div><h1>Loading...</h1></div>)
+        }
+
     }
 }
 
 export default QuizContainer = createContainer(({id}) => {
-    Meteor.subscribe("words", id);
-    return{
-        words: Words.find().fetch()
+    const subscribe = Meteor.subscribe("wordsOfDictionary", id);
+    return {
+        isLoading: subscribe.ready(),
+        dictionary: Dictionaries.findOne()
     }
 
 }, Quiz)

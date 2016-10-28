@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import {Modal, Button, Form, FormGroup, FormControl, ControlLabel} from "react-bootstrap";
-import ReactDOM from 'react-dom';
+import {Modal, Button, Form, FormGroup, ControlLabel} from "react-bootstrap";
 import {createContainer} from "meteor/react-meteor-data";
 
 class NewWordModal extends Component {
@@ -21,14 +20,13 @@ class NewWordModal extends Component {
 
     addWord() {
         let newWord = {
-            word: ReactDOM.findDOMNode(this.refs.word).value.trim(),
-            transcription: ReactDOM.findDOMNode(this.refs.transcription).value.trim(),
-            translation: ReactDOM.findDOMNode(this.refs.translation).value.trim(),
-            dictionaryId: FlowRouter.current().route.getParam('dictionaryId'),
+            spell: this.refs.word.value.trim().toLowerCase(),
+            transcription: this.refs.transcription.value.trim(),
+            translation: this.refs.translation.value.trim(),
             checked: false
         };
 
-        Meteor.call('save.word', newWord);
+        Meteor.call('save.word', newWord, FlowRouter.current().route.getParam('dictionaryId'));
         this.close();
     }
 
@@ -48,17 +46,19 @@ class NewWordModal extends Component {
                             <FormGroup controlId="formInlineWord">
                                 <ControlLabel>Word</ControlLabel>
                                 {' '}
-                                <FormControl type="text" ref="word" placeholder="Word" />
+                                <input type="text" className="form-control" ref="word" placeholder="Word"/>
                             </FormGroup>
                             <FormGroup controlId="formInlineTranscription">
                                 <ControlLabel>Transcription</ControlLabel>
                                 {' '}
-                                <FormControl type="text" ref="transcription" placeholder="Transcription" />
+                                <input type="text" className="form-control" ref="transcription"
+                                       placeholder="Transcription"/>
                             </FormGroup>
                             <FormGroup controlId="formInlineTranslation">
                                 <ControlLabel>Translation</ControlLabel>
                                 {' '}
-                                <FormControl type="text" ref="translation" placeholder="Translation" />
+                                <input type="text" className="form-control" ref="translation"
+                                       placeholder="Translation"/>
                             </FormGroup>
                         </Form>
                     </Modal.Body>
@@ -74,5 +74,5 @@ class NewWordModal extends Component {
 }
 
 export default NewWordModalContainer = createContainer(()=> {
-    return{}
+    return {}
 }, NewWordModal)

@@ -1,7 +1,7 @@
-import { Meteor } from 'meteor/meteor'
-import { FlowRouter } from 'meteor/kadira:flow-router';
-import {Dictionaries, Words} from '../models'
-import { check } from 'meteor/check'
+import {Meteor} from "meteor/meteor";
+import {FlowRouter} from "meteor/kadira:flow-router";
+import {Dictionaries} from "../models";
+import {check} from "meteor/check";
 
 Meteor.methods({
     'user.create'(user){
@@ -10,9 +10,9 @@ Meteor.methods({
             email: String,
             password: String
         });
-        if (Accounts.findUserByEmail(user.email)){
+        if (Accounts.findUserByEmail(user.email)) {
             console.log("This email exist")
-        }else {
+        } else {
             Accounts.createUser({
                 username: user.username,
                 email: user.email,
@@ -29,9 +29,10 @@ Meteor.methods({
             isPublic,
             wordCount: 0,
             owner: Meteor.userId(),
+            words: []
         };
         Dictionaries.insert(dictionary, (err, doc) => {
-            if(err) {
+            if (err) {
                 console.log(err)
             }
         })
@@ -39,11 +40,11 @@ Meteor.methods({
 
     'delete.dictionary'(id){
         check(id, String);
-        if(this.userId){
+        if (this.userId) {
             Dictionaries.remove(id, (err, doc) => {
-                if(err){
+                if (err) {
                     console.log(err)
-                }else {
+                } else {
                     console.log(`Document ${doc} was removed`)
                 }
             })
@@ -51,27 +52,38 @@ Meteor.methods({
 
     },
 
-    'save.word'(word) {
+    'save.word'(word, dictionaryId) {
         check(word, {
-            word: String,
+            spell: String,
             transcription: String,
             translation: String,
-            dictionaryId: String,
             checked: Boolean
         });
-        Dictionaries.update
-        Words.insert(word, (err, doc) => {
-            if(err){
-                console.log(err);
-            }else {
-                console.log(doc);
+        Dictionaries.update(dictionaryId, {
+            $push: {
+                words: word
+            }
+        }, (err, doc) => {
+            if (err) {
+                Meteor.Error(err)
             }
         })
     },
 
-    'word.setChecked'(id, setChecked){
+    'word.setChecked'(id, word, setChecked){
         check(id, String);
         check(setChecked, Boolean);
-        Words.update(id, { $set: { checked: setChecked } });
+
+        Dictionaries.update({_id: id, 'words.spell': word}, {
+            $set: {
+                'words.$.checked': setChecked
+            }
+        }, (err, doc)=> {
+            if (err) {
+                Meteor.Error(err);
+            } else {
+                console.log(`${doc} doc was updated`)
+            }
+        });
     }
 });

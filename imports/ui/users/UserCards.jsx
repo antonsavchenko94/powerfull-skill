@@ -1,15 +1,14 @@
-import { Meteor } from 'meteor/meteor'
+import {Meteor} from "meteor/meteor";
 import React, {Component, PropTypes} from "react";
-import {FormControl, Col, Button, Panel, Row} from "react-bootstrap";
+import {Col, Panel, Row} from "react-bootstrap";
 import {createContainer} from "meteor/react-meteor-data";
-let moment  = require('moment');
-
-import {Dictionaries} from '../../api/models'
+import {Dictionaries} from "../../api/models";
+let moment = require('moment');
 
 class UserCards extends Component {
     renderDictionariesCard() {
         let dictionaries = this.props.dictionaries;
-        let user  = this.props.user;
+        let user = this.props.user;
         return dictionaries.map((dictionary) => {
             return (
                 <Col lg={5} key={dictionary._id}>
@@ -25,7 +24,7 @@ class UserCards extends Component {
     }
 
     render() {
-        return(
+        return (
             <Panel header={this.props.user.username + " dictionaries"}>
                 <Row>
                     {this.renderDictionariesCard()}
@@ -37,9 +36,9 @@ class UserCards extends Component {
 
 export default UserCardsContainer = createContainer(({id}) => {
     Meteor.subscribe('dictionaries');
-    Meteor.subscribe('users');
+    Meteor.subscribe('user');
     return {
         dictionaries: Dictionaries.find({owner: id}).fetch(),
-        user: Meteor.users.findOne({_id: id}) || {},
+        user: Meteor.users || {},
     }
 }, UserCards);

@@ -1,7 +1,7 @@
-import { Meteor } from 'meteor/meteor';
-import '../../api/lists/methods';
-import '../../api/hooks';
-import '../../api/publish';
+import {Meteor} from "meteor/meteor";
+import "../../api/lists/methods";
+import "../../api/lists/server/hooks";
+import "../../api/lists/server/publish";
 
 
 Meteor.startup(() => {

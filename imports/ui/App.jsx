@@ -1,14 +1,13 @@
-import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
-import {Grid, Col, Row, ButtonToolbar, Button} from 'react-bootstrap';
-import { createContainer } from 'meteor/react-meteor-data';
+import React, {Component, PropTypes} from "react";
+import {Col, Row} from "react-bootstrap";
+import {createContainer} from "meteor/react-meteor-data";
 
 
 class App extends Component {
 
     render() {
 
-        return(
+        return (
             <div>
                 <Row>
                     <Col lg={2} md={2}>
@@ -23,6 +22,6 @@ class App extends Component {
     }
 }
 
-export default AppContainer =  createContainer(() => {
-    return {};
+export default AppContainer = createContainer(() => {
+    return {}
 }, App)
