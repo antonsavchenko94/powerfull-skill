@@ -12,7 +12,7 @@ class UserSidebar extends Component {
                 <Row>
                     <div className="profile-sidebar">
                         <div className="profile-userpic">
-                            <img src="/images/man.png" />
+                            <img src={this.props.user.avatarUrl ? this.props.user.avatarUrl : "/images/man.png" } />
                         </div>
                         <div className="profile-usertitle">
                             <div className="profile-usertitle-nam">
@@ -34,7 +34,7 @@ class UserSidebar extends Component {
                                         Our dictionaries </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="/settings">
                                         <i className="glyphicon glyphicon-user"></i>
                                         Account Settings </a>
                                 </li>
