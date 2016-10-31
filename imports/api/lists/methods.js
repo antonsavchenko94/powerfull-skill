@@ -21,6 +21,39 @@ Meteor.methods({
         }
     },
 
+    'user.changeUsername'(username) {
+        check(username, String);
+        if(this.userId) {
+            Accounts.setUsername(this.userId, username)
+        }
+    },
+
+    'user.changeEmail'(email) {
+        check(email, String);
+        if(this.userId) {
+            let currentUserEmail = Meteor.user().emails[0];
+            Accounts.removeEmail(this.userId, currentUserEmail);
+            Accounts.addEmail(this.userId, email);
+        }
+    },
+
+    'user.saveAvatar'(imageBase64Url) {
+        check(imageBase64Url, String)
+        if(this.userId){
+            Meteor.users.update({_id: this.userId}, {
+                $set:{
+                    avatarUrl: imageBase64Url
+                }
+            }, (err, doc) => {
+                if(err) {
+                    console.log(err)
+                }else {
+                    console.log(doc)
+                }
+            })
+        }
+    },
+
     'dictionary.create'(title, isPublic) {
         check(title, String);
         check(isPublic, Boolean);

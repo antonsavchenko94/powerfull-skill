@@ -14,6 +14,7 @@ import Quizzes from "../../ui/components/quizzes/Quizzes";
 import Quiz from "../../ui/components/quizzes/Quiz";
 import SignIn from "../../ui/components/authentication/sign-in/SignIn";
 import SignUp from "../../ui/components/authentication/sign-up/SignUp";
+import UserSettings from "../../ui/components/user-settings/UserSettings";
 
 let loggedOut = FlowRouter.group({
     name: "loggedOut",
@@ -69,6 +70,15 @@ loggedIn.route('/logout', {
             });
         })
 
+    }
+});
+
+loggedIn.route('/settings', {
+    name: "logout",
+    action: (params, queryParams) => {
+        mount(MainContainer, {
+            mainView: <UserSettings/>,
+        });
     }
 });
 
