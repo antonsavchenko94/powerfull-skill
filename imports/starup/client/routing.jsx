@@ -1,17 +1,19 @@
 import {FlowRouter} from "meteor/kadira:flow-router";
 import React from "react";
 import {mount} from "react-mounter";
-import AppContainer from "../../ui/App";
-import Home from "../../ui/home/Home";
-import UserSidebarContainer from "../../ui/user-sidebar/UserSidebar";
-import CardContainer from "../../ui/dictionary/Card";
-import WordsViewContainer from "../../ui/dictionary/words/WordsView";
-import PublicDictionaries from "../../ui/dictionary/PublicDictionaries";
-import UserCardsContainer from "../../ui/users/UserCards";
-import QuizzesContainer from "../../ui/quizzes/Quizzes";
-import QuizContainer from "../../ui/quizzes/Quiz";
-import SignIn from "../../ui/authentication/sign-in/SignIn";
-import SignUp from "../../ui/authentication/sign-up/SignUp";
+
+import MainContainer from "../../ui/containers/MainContainer";
+import LoginContainer from "../../ui/containers/LoginContainer";
+
+import LoginView from "../../ui/components/login-view/LoginView";
+import Card from "../../ui/components/dictionary/Card";
+import WordsView from "../../ui/components/dictionary/words/WordsView";
+import PublicDictionaries from "../../ui/components/dictionary/PublicDictionaries";
+import UserCards from "../../ui/components/users/UserCards";
+import Quizzes from "../../ui/components/quizzes/Quizzes";
+import Quiz from "../../ui/components/quizzes/Quiz";
+import SignIn from "../../ui/components/authentication/sign-in/SignIn";
+import SignUp from "../../ui/components/authentication/sign-up/SignUp";
 
 let loggedOut = FlowRouter.group({
     name: "loggedOut",
@@ -25,8 +27,8 @@ let loggedOut = FlowRouter.group({
 loggedOut.route('/sign-up', {
     name: "sign",
     action: (params, queryParams) => {
-        mount(AppContainer, {
-            mainView: <Home form={<SignIn/>}/>,
+        mount(LoginContainer, {
+            mainView: <LoginView form={<SignIn/>}/>,
         });
     }
 });
@@ -34,8 +36,8 @@ loggedOut.route('/sign-up', {
 loggedOut.route('/', {
     name: "Main",
     action: (params, queryParams) => {
-        mount(AppContainer, {
-            mainView: <Home form={<SignUp/>}/>,
+        mount(LoginContainer, {
+            mainView: <LoginView form={<SignUp/>}/>,
         });
     }
 });
@@ -51,8 +53,7 @@ let loggedIn = FlowRouter.group({
 loggedIn.route('/all-dictionaries', {
     name: "all-dictionaries",
     action: (params, queryParams) => {
-        mount(AppContainer, {
-            userSidebar: <UserSidebarContainer/>,
+        mount(MainContainer, {
             mainView: <PublicDictionaries/>,
         });
 
@@ -63,8 +64,8 @@ loggedIn.route('/logout', {
     name: "logout",
     action: (params, queryParams) => {
         Meteor.logout(() => {
-            mount(AppContainer, {
-                mainView: <Home form={<SignIn/>}/>,
+            mount(LoginContainer, {
+                mainView: <LoginView form={<SignIn/>}/>,
             });
         })
 
@@ -74,9 +75,8 @@ loggedIn.route('/logout', {
 loggedIn.route('/dictionaries', {
     name: "dictionaries",
     action: (params, queryParams) => {
-        mount(AppContainer, {
-            userSidebar: <UserSidebarContainer/>,
-            mainView: <CardContainer/>,
+        mount(MainContainer, {
+            mainView: <Card/>,
         });
     }
 });
@@ -84,9 +84,8 @@ loggedIn.route('/dictionaries', {
 loggedIn.route('/view/:dictionaryId', {
     name: "dictionary-view",
     action: (params, queryParams) => {
-        mount(AppContainer, {
-            userSidebar: <UserSidebarContainer/>,
-            mainView: <WordsViewContainer id={params.dictionaryId}/>,
+        mount(MainContainer, {
+            mainView: <WordsView id={params.dictionaryId}/>,
         });
     }
 });
@@ -94,9 +93,8 @@ loggedIn.route('/view/:dictionaryId', {
 loggedIn.route('/user/:id/view/:dictionaryId', {
     name: "user-view-dictionaries",
     action: (params, queryParams) => {
-        mount(AppContainer, {
-            userSidebar: <UserSidebarContainer/>,
-            mainView: <WordsViewContainer id={params.dictionaryId}/>,
+        mount(MainContainer, {
+            mainView: <WordsView id={params.dictionaryId}/>,
         });
     }
 });
@@ -104,9 +102,8 @@ loggedIn.route('/user/:id/view/:dictionaryId', {
 loggedIn.route('/user/:id', {
     name: "some-user-dictionaries",
     action: (params, queryParams) => {
-        mount(AppContainer, {
-            userSidebar: <UserSidebarContainer/>,
-            mainView: <UserCardsContainer id={params.id}/>,
+        mount(MainContainer, {
+            mainView: <UserCards id={params.id}/>,
         });
     }
 });
@@ -114,9 +111,8 @@ loggedIn.route('/user/:id', {
 loggedIn.route('/quizzes', {
     name: "quizzes",
     action: (params, queryParams) => {
-        mount(AppContainer, {
-            userSidebar: <UserSidebarContainer/>,
-            mainView: <QuizzesContainer/>,
+        mount(MainContainer, {
+            mainView: <Quizzes/>,
         });
     }
 });
@@ -124,9 +120,8 @@ loggedIn.route('/quizzes', {
 loggedIn.route('/quiz/:id', {
     name: "quiz",
     action: (params, queryParams) => {
-        mount(AppContainer, {
-            userSidebar: <UserSidebarContainer/>,
-            mainView: <QuizContainer id={params.id}/>,
+        mount(MainContainer, {
+            mainView: <Quiz id={params.id}/>,
         });
     }
 });

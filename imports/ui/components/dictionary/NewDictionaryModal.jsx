@@ -71,6 +71,6 @@ class NewDictionaryModal extends Component {
     }
 };
 
-export default NewDictionaryModalContainer = createContainer(()=>{
+export default createContainer(()=>{
     return {}
 }, NewDictionaryModal)

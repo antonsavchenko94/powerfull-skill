@@ -2,7 +2,7 @@ import {Meteor} from "meteor/meteor";
 import React, {Component, PropTypes} from "react";
 import {Col, Panel} from "react-bootstrap";
 import {createContainer} from "meteor/react-meteor-data";
-import {Dictionaries} from "../../api/models";
+import {Dictionaries} from "../../../api/models";
 
 
 class Quizzes extends Component {
@@ -33,7 +33,7 @@ class Quizzes extends Component {
     }
 }
 
-export default QuizContainer = createContainer(() => {
+export default createContainer(() => {
     Meteor.subscribe('dictionariesWithWords');
     return{
         dictionaries: Dictionaries.find().fetch(),

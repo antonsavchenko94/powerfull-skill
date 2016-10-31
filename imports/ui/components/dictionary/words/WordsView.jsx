@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import {Panel, Table, Checkbox} from "react-bootstrap";
 import {createContainer} from "meteor/react-meteor-data";
-import {Words, Dictionaries} from "../../../api/models";
+import {Words, Dictionaries} from "../../../../api/models";
 import WordContainer from "./Word";
 import NewWordModalContainer from "./NewWordModal";
 
@@ -64,7 +64,7 @@ class WordsView extends Component {
     }
 }
 
-export default WordsViewContainer = createContainer(({id}) => {
+export default createContainer(({id}) => {
     let subscribe = Meteor.subscribe('dictionary', id);
     return {
         dictionary: Dictionaries.findOne(),

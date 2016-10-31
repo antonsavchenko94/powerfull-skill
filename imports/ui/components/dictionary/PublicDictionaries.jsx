@@ -3,7 +3,7 @@ import React, {Component, PropTypes} from "react";
 import {FormControl, Col, Button, Panel} from "react-bootstrap";
 import {createContainer} from "meteor/react-meteor-data";
 
-import {Dictionaries} from '../../api/models'
+import {Dictionaries} from '../../../api/models'
 
 class PublicDictionaries extends Component {
 
@@ -37,7 +37,7 @@ class PublicDictionaries extends Component {
     }
 }
 
-export default PublicDictionariesConteiner = createContainer(() => {
+export default createContainer(() => {
     Meteor.subscribe('publicDictionaries');
     Meteor.subscribe('users');
     return{

@@ -2,7 +2,7 @@ import {Meteor} from "meteor/meteor";
 import React, {Component} from "react";
 import {Col, Button, Panel, Form, FormGroup, ControlLabel} from "react-bootstrap";
 import {createContainer} from "meteor/react-meteor-data";
-import {Dictionaries} from "../../api/models";
+import {Dictionaries} from "../../../api/models";
 
 class Quiz extends Component {
     constructor(props) {
@@ -84,7 +84,7 @@ class Quiz extends Component {
     }
 }
 
-export default QuizContainer = createContainer(({id}) => {
+export default createContainer(({id}) => {
     const subscribe = Meteor.subscribe("wordsOfDictionary", id);
     return {
         isLoading: subscribe.ready(),

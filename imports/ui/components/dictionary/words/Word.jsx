@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import classnames from "classnames";
 import {createContainer} from "meteor/react-meteor-data";
-import {Words} from "../../../api/models";
+import {Words} from "../../../../api/models";
 
 class Word extends Component {
     toggleChecked() {
@@ -28,6 +28,6 @@ class Word extends Component {
         )
     }
 }
-export default WordContainer = createContainer(() => {
+export default createContainer(() => {
     return {}
 }, Word)

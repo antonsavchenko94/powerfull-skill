@@ -2,7 +2,7 @@ import {Meteor} from "meteor/meteor";
 import React, {Component, PropTypes} from "react";
 import {Col, Panel, Row} from "react-bootstrap";
 import {createContainer} from "meteor/react-meteor-data";
-import {Dictionaries} from "../../api/models";
+import {Dictionaries} from "../../../api/models";
 import NewDictionaryModalContainer from "./NewDictionaryModal";
 let moment = require('moment');
 
@@ -58,7 +58,7 @@ class Card extends Component {
 
 }
 
-export default CardConteiner = createContainer(() => {
+export default createContainer(() => {
     const subscribe = Meteor.subscribe('dictionaries');
     return {
         isLoading: subscribe.ready(),

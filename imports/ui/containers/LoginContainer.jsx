@@ -3,16 +3,13 @@ import {Col, Row} from "react-bootstrap";
 import {createContainer} from "meteor/react-meteor-data";
 
 
-class App extends Component {
+class LoginContainer extends Component {
 
     render() {
 
         return (
             <div>
                 <Row>
-                    <Col lg={2} md={2}>
-                        {this.props.userSidebar}
-                    </Col>
                     <Col lg={8} md={8}>
                         {this.props.mainView}
                     </Col>
@@ -22,6 +19,6 @@ class App extends Component {
     }
 }
 
-export default AppContainer = createContainer(() => {
+export default LoginContainer = createContainer(() => {
     return {}
-}, App)
+}, LoginContainer)

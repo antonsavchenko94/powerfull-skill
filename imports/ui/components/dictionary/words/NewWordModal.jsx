@@ -73,6 +73,6 @@ class NewWordModal extends Component {
 
 }
 
-export default NewWordModalContainer = createContainer(()=> {
+export default createContainer(()=> {
     return {}
 }, NewWordModal)

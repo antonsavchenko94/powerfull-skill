@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {Grid, Col, Row} from "react-bootstrap";
 
 
-class Home extends Component {
+class LoginView extends Component {
     constructor() {
         super();
         this.state = {whichForm: false}
@@ -34,4 +34,4 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default LoginView;

@@ -62,7 +62,7 @@ class UserSidebar extends Component {
     }
 }
 
-export default UserSidebarContainer = createContainer(() => {
+export default createContainer(() => {
     const subscribe =  Meteor.subscribe("currentUser");
     return {
         isLoading: subscribe.ready(),
