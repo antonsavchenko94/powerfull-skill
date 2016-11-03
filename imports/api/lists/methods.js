@@ -23,6 +23,7 @@ Meteor.methods({
 
     'user.changeUsername'(username) {
         check(username, String);
+
         if (this.userId) {
             Accounts.setUsername(this.userId, username)
         }
@@ -101,7 +102,7 @@ Meteor.methods({
         }
     },
 
-    'word.save'(word) {
+    'word.save'(word, synonyms) {
         check(word, {
             dictionaryId: String,
             spell: String,
@@ -110,8 +111,19 @@ Meteor.methods({
             context: Match.Maybe(String),
             checked: Boolean
         });
+
+        check(synonyms, Array);
         if (this.userId) {
             word.userId = this.userId;
+            let synonymsWithId = [];
+
+            Words.find({spell: {$in: synonyms}}).forEach((item) => {
+                synonymsWithId.push({
+                    _id: item._id,
+                    spell: item.spell,
+                })
+            });
+            word.synonyms = synonymsWithId || [];
             Words.insert(word, (err, doc) => {
                 if (err) {
                     Meteor.Error(err);
@@ -122,6 +134,7 @@ Meteor.methods({
 
     'word.delete'(id){
         check(id, String);
+
         Words.remove({_id: id}, (err, doc) => {
             if (err) {
                 Meteor.Error(err);
@@ -129,20 +142,27 @@ Meteor.methods({
         })
     },
 
-    'word.setChecked'(id, setChecked){
+    'word.update'(id, modifier){
         check(id, String);
-        check(setChecked, Boolean);
+        check(modifier, Object);
 
-        Words.update({_id: id}, {
-            $set: {
-                checked: setChecked
-            }
-        }, (err, doc)=> {
+        Words.update({_id: id}, {$set: modifier}, (err, doc) => {
             if (err) {
                 Meteor.Error(err);
             } else {
                 console.log(`${doc} doc was updated`)
             }
         });
+    },
+
+
+    'word.search'(searchValue){
+        check(searchValue, String);
+        return Words.find({spell: {$regex: searchValue, $options: "x"}}, {
+            fields: {
+                spell: 1
+            }
+        }).fetch()
     }
+
 });
