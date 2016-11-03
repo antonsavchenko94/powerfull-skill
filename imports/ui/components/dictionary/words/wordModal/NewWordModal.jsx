@@ -1,12 +1,15 @@
 import React, {Component, PropTypes} from "react";
 import {Modal, Button, Form, FormGroup, ControlLabel} from "react-bootstrap";
 import {createContainer} from "meteor/react-meteor-data";
+import Search from "react-search";
 
 class NewWordModal extends Component {
     constructor() {
         super();
         this.state = {
-            showModal: false
+            showModal: false,
+            searchItems: [],
+            synonyms: []
         }
     }
 
@@ -18,20 +21,38 @@ class NewWordModal extends Component {
         this.setState({showModal: true});
     }
 
-    addWord(event) {
-        event.preventDefault();
+    addWord() {
         let newWord = {
             dictionaryId: FlowRouter.current().route.getParam('dictionaryId'),
             spell: this.refs.word.value.trim().toLowerCase(),
             transcription: this.refs.transcription.value.trim(),
             translation: this.refs.translation.value.trim(),
-            context: this.refs.context.value.trim() || "Context doesn`t add",
+            context: this.refs.context.value.trim() || "Context doesn   `t add",
             checked: false
         };
-
-        Meteor.call('word.save', newWord);
+        Meteor.call('word.save', newWord, this.state.synonyms);
         this.close();
     }
+
+    getItemsAsync(searchValue, cb) {
+        Meteor.call('word.search', searchValue, (err, result) => {
+            let items = result.map((res, i) => {
+                return {id: i, value: res.spell}
+            });
+            this.setState({searchItems: items});
+            cb(searchValue)
+        })
+    }
+
+    setSynonyms(items) {
+        let withoutId = items.map((item) => {
+            return item.value;
+        });
+        this.setState({
+            synonyms: withoutId
+        });
+    }
+
 
     render() {
         return (
@@ -72,6 +93,13 @@ class NewWordModal extends Component {
                                 <textarea className="form-control" ref="context" placeholder="Context"/>
                             </FormGroup>
                         </Form>
+                        <hr/>
+                        <h4>Find and add synonyms</h4>
+                        <Search items={this.state.searchItems}
+                                multiple={true}
+                                maxSelected={5}
+                                getItemsAsync={this.getItemsAsync.bind(this)}
+                                onItemsChanged={this.setSynonyms.bind(this)}/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.close.bind(this)}>Close</Button>
