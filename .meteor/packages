@@ -27,3 +27,4 @@ react-meteor-data
 twbs:bootstrap
 check@1.2.4
 matb33:collection-hooks
+percolate:migrations
