@@ -18,15 +18,18 @@ class NewWordModal extends Component {
         this.setState({showModal: true});
     }
 
-    addWord() {
+    addWord(event) {
+        event.preventDefault();
         let newWord = {
+            dictionaryId: FlowRouter.current().route.getParam('dictionaryId'),
             spell: this.refs.word.value.trim().toLowerCase(),
             transcription: this.refs.transcription.value.trim(),
             translation: this.refs.translation.value.trim(),
+            context: this.refs.context.value.trim() || "Context doesn`t add",
             checked: false
         };
 
-        Meteor.call('save.word', newWord, FlowRouter.current().route.getParam('dictionaryId'));
+        Meteor.call('word.save', newWord);
         this.close();
     }
 
@@ -42,7 +45,7 @@ class NewWordModal extends Component {
                         <Modal.Title>Create new card</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form >
+                        <form onSubmit={this.addWord.bind(this)}>
                             <FormGroup controlId="formInlineWord">
                                 <ControlLabel>Word</ControlLabel>
                                 {' '}
@@ -60,11 +63,19 @@ class NewWordModal extends Component {
                                 <input type="text" className="form-control" ref="translation"
                                        placeholder="Translation"/>
                             </FormGroup>
+                        </form>
+                        <hr/>
+                        <Form >
+                            <FormGroup controlId="formInlineWord">
+                                <ControlLabel>Context</ControlLabel>
+                                {' '}
+                                <textarea className="form-control" ref="context" placeholder="Context"/>
+                            </FormGroup>
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.close.bind(this)}>Close</Button>
-                        <Button onClick={this.addWord.bind(this)}>Add</Button>
+                        <Button bsStyle="primary" onClick={this.addWord.bind(this)}>Add</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
