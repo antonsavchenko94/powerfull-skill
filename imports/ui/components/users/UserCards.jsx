@@ -24,21 +24,27 @@ class UserCards extends Component {
     }
 
     render() {
-        return (
-            <Panel header={this.props.user.username + " dictionaries"}>
-                <Row>
-                    {this.renderDictionariesCard()}
-                </Row>
-            </Panel>
-        )
+        if(this.props.isLoading){
+            return (
+                <Panel header={this.props.user.username + " dictionaries"}>
+                    <Row>
+                        {this.renderDictionariesCard()}
+                    </Row>
+                </Panel>
+            )
+        }
+        else {
+            return (<div><h1>Loading...</h1></div>)
+        }
     }
 }
 
 export default createContainer(({id}) => {
-    Meteor.subscribe('dictionaries');
-    Meteor.subscribe('user');
+    let dictionarySub = Meteor.subscribe('dictionariesOfAnotherUser', id).ready(),
+        userSub = Meteor.subscribe('user', id).ready();
     return {
-        dictionaries: Dictionaries.find({owner: id}).fetch(),
-        user: Meteor.users || {},
+        dictionaries: Dictionaries.find().fetch(),
+        user: Meteor.users.findOne(),
+        isLoading: dictionarySub && userSub
     }
 }, UserCards);

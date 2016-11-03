@@ -29,7 +29,7 @@ loggedOut.route('/sign-up', {
     name: "sign",
     action: (params, queryParams) => {
         mount(LoginContainer, {
-            mainView: <LoginView form={<SignIn/>}/>,
+            mainView: <LoginView form={<SignUp/>}/>,
         });
     }
 });
@@ -38,7 +38,7 @@ loggedOut.route('/', {
     name: "Main",
     action: (params, queryParams) => {
         mount(LoginContainer, {
-            mainView: <LoginView form={<SignUp/>}/>,
+            mainView: <LoginView form={<SignIn/>}/>,
         });
     }
 });
@@ -109,11 +109,11 @@ loggedIn.route('/user/:id/view/:dictionaryId', {
     }
 });
 
-loggedIn.route('/user/:id', {
+loggedIn.route('/user/:userId', {
     name: "some-user-dictionaries",
     action: (params, queryParams) => {
         mount(MainContainer, {
-            mainView: <UserCards id={params.id}/>,
+            mainView: <UserCards id={params.userId}/>,
         });
     }
 });

@@ -29,22 +29,27 @@ class PublicDictionaries extends Component {
     }
 
     render() {
-        return (
-            <Panel header="Public dictionaries">
-                {this.renderPublicDictionaries()}
-            </Panel>
-        )
+        if(this.props.isLoading){
+            return (
+                <Panel header="Public dictionaries">
+                    {this.renderPublicDictionaries()}
+                </Panel>
+            )
+        }
+        else {
+            return (<div><h1>Loading...</h1></div>)
+        }
     }
 }
 
 export default createContainer(() => {
-    Meteor.subscribe('publicDictionaries');
-    Meteor.subscribe('users');
+    let dictionarySub = Meteor.subscribe('publicDictionaries').ready(),
+        userSub = Meteor.subscribe('users').ready();
     return{
         dictionaries: Dictionaries.find().map((dictionary) => {
-            let user = Meteor.users.findOne({_id:dictionary.owner});
-            dictionary.owner = user||{};
+            dictionary.owner = Meteor.users.findOne({_id: dictionary.owner});
             return dictionary;
         } ),
+        isLoading: userSub && dictionarySub
     }
 }, PublicDictionaries)

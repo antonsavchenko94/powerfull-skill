@@ -10,7 +10,7 @@ class LoginContainer extends Component {
         return (
             <div>
                 <Row>
-                    <Col lg={8} md={8}>
+                    <Col lg={8} lgOffset={2} md={8} mdOffset={2}>
                         {this.props.mainView}
                     </Col>
                 </Row>

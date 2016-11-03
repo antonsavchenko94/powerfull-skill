@@ -1,11 +1,15 @@
 import React, {Component, PropTypes} from "react";
 import classnames from "classnames";
 import {createContainer} from "meteor/react-meteor-data";
-import {Words} from "../../../../api/models";
+import WordDetailsModal from "./wordModal/WordDetailsModal";
 
 class Word extends Component {
     toggleChecked() {
-        Meteor.call('word.setChecked', this.props.dictionaryId, this.props.item.spell, !this.props.item.checked);
+        Meteor.call('word.setChecked', this.props.item._id, !this.props.item.checked);
+    }
+
+    deleteWord() {
+        Meteor.call('word.delete', this.props.item._id);
     }
 
     render() {
@@ -21,9 +25,17 @@ class Word extends Component {
                         checked={this.props.item.checked}
                         onChange={this.toggleChecked.bind(this)}/>
                 </td>
-                <td>{ this.props.item.spell }</td>
-                <td>{ this.props.item.transcription}</td>
-                <td>{ this.props.item.translation}</td>
+                <td>
+                    <div>
+                        <WordDetailsModal word={this.props.item}/>
+                    </div>
+                </td>
+                <td>{ this.props.item.transcription }</td>
+                <td>{ this.props.item.translation }</td>
+                <td>
+                    <img onClick={ this.deleteWord.bind(this) } src="/images/rubbish-bin.png"
+                         className="word-delete-button"/>
+                </td>
             </tr>
         )
     }

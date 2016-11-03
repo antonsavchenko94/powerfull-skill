@@ -3,7 +3,7 @@ import {Panel, Table, Checkbox} from "react-bootstrap";
 import {createContainer} from "meteor/react-meteor-data";
 import {Words, Dictionaries} from "../../../../api/models";
 import WordContainer from "./Word";
-import NewWordModalContainer from "./NewWordModal";
+import NewWordModalContainer from "./wordModal/NewWordModal";
 
 class WordsView extends Component {
     constructor() {
@@ -14,7 +14,7 @@ class WordsView extends Component {
     }
 
     viewWords() {
-        let words = this.props.dictionary.words;
+        let words = this.props.words;
         if (this.state.hideCompleted) {
             words = words.filter(item => !item.checked);
         }
@@ -31,15 +31,28 @@ class WordsView extends Component {
         });
     }
 
+    togglePrivate() {
+        let modifier = {
+            isPublic: !this.props.dictionary.isPublic
+        };
+        Meteor.call('dictionary.update', this.props.dictionary._id, modifier)
+    }
+
     render() {
         if (this.props.isLoading) {
             return (
                 <Panel header={this.props.dictionary.title}>
                     <Checkbox
                         checked={this.state.hideCompleted}
-                        onClick={this.toggleLearnedCompleted.bind(this)}
+                        onChange={this.toggleLearnedCompleted.bind(this)}
                     >
                         Hide learned words
+                    </Checkbox>
+                    <Checkbox
+                        checked={this.props.dictionary.isPublic}
+                        onChange={this.togglePrivate.bind(this)}
+                    >
+                        Is public dictionary
                     </Checkbox>
                     <NewWordModalContainer/>
                     <Table striped bordered condensed hover>
@@ -49,6 +62,7 @@ class WordsView extends Component {
                             <th>Word</th>
                             <th>Transcription</th>
                             <th>Translation</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody className="word-container">
@@ -65,9 +79,11 @@ class WordsView extends Component {
 }
 
 export default createContainer(({id}) => {
-    let subscribe = Meteor.subscribe('dictionary', id);
+    let dictionarySubscribe = Meteor.subscribe('dictionary', id).ready(),
+        wordSubscribe = Meteor.subscribe('words', id).ready();
     return {
         dictionary: Dictionaries.findOne(),
-        isLoading: subscribe.ready(),
+        words: Words.find().fetch(),
+        isLoading: dictionarySubscribe && wordSubscribe,
     }
 }, WordsView)

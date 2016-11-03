@@ -26,12 +26,12 @@ class UserSidebar extends Component {
                                 <li>
                                     <a href="/all-dictionaries">
                                         <i className="glyphicon glyphicon-th"></i>
-                                        All dictionaries</a>
+                                        Public dictionaries</a>
                                 </li>
                                 <li>
                                     <a href="/dictionaries">
                                         <i className="glyphicon glyphicon-book"></i>
-                                        Our dictionaries </a>
+                                        Your dictionaries </a>
                                 </li>
                                 <li>
                                     <a href="/settings">
