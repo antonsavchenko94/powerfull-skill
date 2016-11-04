@@ -17,7 +17,8 @@ class NewWordModal extends Component {
         this.setState({showModal: false});
     }
 
-    open() {
+    open(event) {
+        event.preventDefault();
         this.setState({showModal: true});
     }
 
@@ -28,7 +29,6 @@ class NewWordModal extends Component {
             transcription: this.refs.transcription.value.trim(),
             translation: this.refs.translation.value.trim(),
             context: this.refs.context.value.trim() || "Context doesn   `t add",
-            checked: false
         };
         Meteor.call('word.save', newWord, this.state.synonyms);
         this.close();
@@ -57,10 +57,7 @@ class NewWordModal extends Component {
     render() {
         return (
             <div>
-                <a onClick={this.open.bind(this)}>
-                    <img src="/images/compose.png"/>
-                </a>
-
+                <button type="button"  className="btn btn-success" onClick={this.open.bind(this)}>Add word</button>
                 <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
                     <Modal.Header closeButton>
                         <Modal.Title>Create new card</Modal.Title>
@@ -96,6 +93,7 @@ class NewWordModal extends Component {
                         <hr/>
                         <h4>Find and add synonyms</h4>
                         <Search items={this.state.searchItems}
+                                placeholder="Find synonyms"
                                 multiple={true}
                                 maxSelected={5}
                                 getItemsAsync={this.getItemsAsync.bind(this)}

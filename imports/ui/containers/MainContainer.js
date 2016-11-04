@@ -14,7 +14,7 @@ class MainContainer extends Component {
                     <Col lg={2} md={2}>
                         <UserSidebar/>
                     </Col>
-                    <Col lg={8} md={8}>
+                    <Col lg={10} md={10}>
                         {this.props.mainView}
                     </Col>
                 </Row>

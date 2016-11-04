@@ -25,6 +25,22 @@ class Word extends Component {
 
     }
 
+    renderEditWord() {
+        if(this.props.item.userId === this.props.userId){
+            return (
+                <div>
+                    <img onClick={ this.deleteWord.bind(this) } src="/images/rubbish-bin.png"
+                         className="word-delete-button"/>
+                    {' '}||{' '}
+                    <WordEditModal word={this.props.item}/>
+                </div>
+            )
+        } else {
+            return (<div></div>)
+        }
+
+    }
+
     render() {
         const wordClassName = classnames({
             checked: this.props.item.checked,
@@ -36,7 +52,7 @@ class Word extends Component {
                     <td>
                         <input
                             type="checkbox"
-                            readOnly
+                            disabled={this.props.item.userId != this.props.userId}
                             checked={this.props.item.checked}
                             onChange={this.toggleChecked.bind(this)}/>
                     </td>
@@ -45,17 +61,14 @@ class Word extends Component {
                     </td>
                     <td>{ this.props.item.transcription }</td>
                     <td>{ this.props.item.translation }</td>
-                    <td>
-                        <img onClick={ this.deleteWord.bind(this) } src="/images/rubbish-bin.png"
-                             className="word-delete-button"/>
-                        {' '}||{' '}
-                        <WordEditModal word={this.props.item}/>
-                    </td>
+                    <td>{ this.renderEditWord()}</td>
                 </tr>
             </OverlayTrigger>
         )
     }
 }
 export default createContainer(() => {
-    return {}
+    return {
+        userId: Meteor.userId(),
+    }
 }, Word)

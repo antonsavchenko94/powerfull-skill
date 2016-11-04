@@ -44,6 +44,11 @@ class UserSidebar extends Component {
                                         Quizzes </a>
                                 </li>
                                 <li>
+                                    <a href="/faq">
+                                        <i className="glyphicon glyphicon-warning-sign"></i>
+                                        FAQ</a>
+                                </li>
+                                <li>
                                     <a href="/logout">
                                         <i className="glyphicon glyphicon-flag"></i>
                                         Logout </a>

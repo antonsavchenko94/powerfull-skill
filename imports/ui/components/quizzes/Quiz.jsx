@@ -69,7 +69,7 @@ class Quiz extends Component {
             return (
                 <Col lg={6}>
                     <h1>You have {this.state.correctAnswersCount} correct answers and {this.state.wrongAnswersCount}
-                        wrong</h1>
+                         wrong</h1>
                 </Col>
             )
         }
@@ -97,7 +97,7 @@ export default createContainer(({id}) => {
     return {
         isLoading: wordsSub && dictionarySub,
         dictionary: Dictionaries.findOne(),
-        words: Words.find().fetch().sort(f=>.5 -Math.random())
+        words: Words.find({cheked: false}).fetch().sort(f=>.5 -Math.random())
     }
 
 }, Quiz)

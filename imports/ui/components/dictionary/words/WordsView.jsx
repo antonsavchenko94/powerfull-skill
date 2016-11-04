@@ -71,8 +71,6 @@ class WordsView extends Component {
 
     render() {
         if (this.props.isLoading) {
-            console.log(this.props.userId);
-            console.log(!!this.props.userId );
             return (
                 <Panel header={this.props.dictionary.title}>
                     {

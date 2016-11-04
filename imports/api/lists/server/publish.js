@@ -33,7 +33,11 @@ Meteor.publish('user', function (id) {
 
 Meteor.publish('dictionaries', function () {
     if (this.userId) {
-        return Dictionaries.find();
+        return Dictionaries.find({}, {
+            fields: {
+                isPublic: 0
+            }
+        });
     } else {
         throw new Meteor.Error('You must authorize!!!')
     }
@@ -49,12 +53,19 @@ Meteor.publish('dictionariesWithWords', function () {
         }).map((word) => {
             dictionariesId.push(word.dictionaryId)
         });
-        return Dictionaries.find({
-            owner: this.userId,
-            _id: {
-                $in: dictionariesId
+        return Dictionaries.find(
+            {
+                owner: this.userId,
+                _id: {
+                    $in: dictionariesId
+                }
+            },
+            {
+                fields: {
+                    isPublic: 0
+                }
             }
-        });
+        );
     } else {
         throw new Meteor.Error('You must authorize!!!')
     }
