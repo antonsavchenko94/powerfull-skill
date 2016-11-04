@@ -61,9 +61,7 @@ Meteor.methods({
         let dictionary = {
             title,
             isPublic,
-            wordCount: 0,
             owner: Meteor.userId(),
-            words: []
         };
         Dictionaries.insert(dictionary, (err, doc) => {
             if (err) {

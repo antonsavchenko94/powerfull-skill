@@ -7,7 +7,7 @@ import "../../api/lists/server/migrations";
 
 
 Meteor.startup(() => {
-    Migrations.migrateTo(1);
+    Migrations.migrateTo('latest');
 });
 
 
