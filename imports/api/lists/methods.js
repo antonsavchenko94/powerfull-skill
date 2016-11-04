@@ -109,7 +109,6 @@ Meteor.methods({
             transcription: String,
             translation: String,
             context: Match.Maybe(String),
-            checked: Boolean
         });
 
         check(synonyms, Array);
@@ -161,8 +160,29 @@ Meteor.methods({
         return Words.find({spell: {$regex: searchValue, $options: "x"}}, {
             fields: {
                 spell: 1
-            }
+            },
+            limit: 5,
         }).fetch()
+    },
+
+    'word.importFromCsv'(csv, dictionaryId) {
+        let Converter = require("csvtojson").Converter,
+            csvConverter = new Converter();
+
+        csvConverter.on("end_parsed", Meteor.bindEnvironment((jsonObj) => {
+            console.log(jsonObj);
+                jsonObj.forEach((word) => {
+                    word.dictionaryId = dictionaryId;
+                    Meteor.call('word.save', word, [])
+                });
+                console.log("Finished parsing");
+            })
+        );
+        csvConverter.fromString(csv, function (err, jsonObj) {
+            if (err) {
+                console.log(err)
+            }
+        });
     }
 
 });

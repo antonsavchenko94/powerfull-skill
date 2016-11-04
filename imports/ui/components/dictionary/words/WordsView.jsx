@@ -38,23 +38,47 @@ class WordsView extends Component {
         Meteor.call('dictionary.update', this.props.dictionary._id, modifier)
     }
 
+    uploadCsv(event) {
+        event.preventDefault();
+        let file = event.target.files[0];
+        var reader = new FileReader();
+        reader.onload = () => {
+            Meteor.call('word.importFromCsv', reader.result, this.props.dictionary._id)
+        };
+        reader.readAsText(file);
+    }
+
+    renderOperationsOnWords() {
+        return (
+            <form className="form-horizontal">
+                <Checkbox
+                    checked={this.state.hideCompleted}
+                    onChange={this.toggleLearnedCompleted.bind(this)}
+                >
+                    Hide learned words
+                </Checkbox>
+                <Checkbox
+                    checked={this.props.dictionary.isPublic}
+                    onChange={this.togglePrivate.bind(this)}>
+                    Is public dictionary
+                </Checkbox>
+                <NewWordModalContainer/>
+                <input type="file" onChange={this.uploadCsv.bind(this)}/>
+                <img src=""/>
+            </form>
+        )
+    }
+
     render() {
         if (this.props.isLoading) {
+            console.log(this.props.userId);
+            console.log(!!this.props.userId );
             return (
                 <Panel header={this.props.dictionary.title}>
-                    <Checkbox
-                        checked={this.state.hideCompleted}
-                        onChange={this.toggleLearnedCompleted.bind(this)}
-                    >
-                        Hide learned words
-                    </Checkbox>
-                    <Checkbox
-                        checked={this.props.dictionary.isPublic}
-                        onChange={this.togglePrivate.bind(this)}
-                    >
-                        Is public dictionary
-                    </Checkbox>
-                    <NewWordModalContainer/>
+                    {
+                        this.props.userId === this.props.dictionary.owner?
+                            this.renderOperationsOnWords() : ''
+                    }
                     <Table striped bordered condensed hover>
                         <thead>
                         <tr>
@@ -82,6 +106,7 @@ export default createContainer(({id}) => {
     let dictionarySubscribe = Meteor.subscribe('dictionary', id).ready(),
         wordSubscribe = Meteor.subscribe('words', id).ready();
     return {
+        userId: Meteor.userId(),
         dictionary: Dictionaries.findOne(),
         words: Words.find().fetch(),
         isLoading: dictionarySubscribe && wordSubscribe,
