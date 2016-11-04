@@ -15,6 +15,7 @@ import Quiz from "../../ui/components/quizzes/Quiz";
 import SignIn from "../../ui/components/authentication/sign-in/SignIn";
 import SignUp from "../../ui/components/authentication/sign-up/SignUp";
 import UserSettings from "../../ui/components/user-settings/UserSettings";
+import FAQ from "../../ui/components/FAQ";
 
 let loggedOut = FlowRouter.group({
     name: "loggedOut",
@@ -132,6 +133,15 @@ loggedIn.route('/quiz/:id', {
     action: (params, queryParams) => {
         mount(MainContainer, {
             mainView: <Quiz id={params.id}/>,
+        });
+    }
+});
+
+loggedIn.route('/faq', {
+    name: "faq",
+    action: (params, queryParams) => {
+        mount(MainContainer, {
+            mainView: <FAQ/>,
         });
     }
 });
