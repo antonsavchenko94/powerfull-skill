@@ -75,13 +75,18 @@ Meteor.methods({
     'delete.dictionary'(id){
         check(id, String);
         if (this.userId) {
-            Dictionaries.remove(id, (err, doc) => {
-                if (err) {
-                    Meteor.Error(err);
-                } else {
-                    console.log(`Document ${doc} was removed`)
-                }
-            })
+            let ownerId = Dictionaries.findOne({_id: id}).ownerId;
+            if(this.userId === ownerId) {
+                Dictionaries.remove(id, (err, doc) => {
+                    if (err) {
+                        Meteor.Error(err);
+                    } else {
+                        console.log(`Document ${doc} was removed`)
+                    }
+                })
+            } else {
+                console.log('access denied')
+            }
         }
     },
 
@@ -133,12 +138,19 @@ Meteor.methods({
 
     'word.delete'(id){
         check(id, String);
-
-        Words.remove({_id: id}, (err, doc) => {
-            if (err) {
-                Meteor.Error(err);
+        if (this.userId) {
+            let ownerId = Words.findOne({_id: id}).userId;
+            if(this.userId === ownerId) {
+                Words.remove({_id: id}, (err, doc) => {
+                    if (err) {
+                        Meteor.Error(err);
+                    }
+                })
+            } else {
+                Meteor.Error('access denied')
             }
-        })
+
+        }
     },
 
     'word.update'(id, modifier){
@@ -180,7 +192,7 @@ Meteor.methods({
         );
         csvConverter.fromString(csv, function (err, jsonObj) {
             if (err) {
-                console.log(err)
+                Meteor.Error(err)
             }
         });
     }
